@@ -5,14 +5,15 @@ function readURL(input) {
         reader.onload = function (e) {
             $('#preview')
                 .attr('src', e.target.result)
-                .width(47)
-                .height(47);
+                .width(90)
+                .height(90);
             var img = document.getElementById('preview');
             var canvas = document.createElement('canvas');
             canvas.width = img.width;
             canvas.height = img.height;
             canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
             var toSend = getDataToSend(canvas);
+            console.log(toSend);
             postData(toSend);
             
         };
@@ -22,27 +23,20 @@ function readURL(input) {
 }
 
 
-$(function () {
-    var box = $('#box')[0];
-    $('#colored_sketch').sketch();
-    $("#slider-horiz").slider({
-        orientation: "horizontal",
-        min: 0,
-        max: 360,
-        value: 0,
-        slide: function (event, ui) {
-            //console.log('/'+hsl(ui.value, 100%, 50%));
-            //$('#box').attr('data-color', 'hsl(' + ui.value + ', 100%, 50%)');
-            box.style.background = 'hsl(' + ui.value + ', 100%, 50%)';
-            var clr = $('#box').css('background-color');
-            $('#box').attr('data-color', clr).trigger('click');
-        }
-    });
-});
+function nav(section){
+    $("#home").addClass('hide');
+    $("#"+section).removeClass('hide');
+    $("#"+section).addClass('active');
+    initCarousel();
+}
 
+function goHomeFrom(section){
+    $("#"+section).removeClass('active');
+    $("#"+section).addClass('hide');
+    $("#home").removeClass('hide');
+}
 
 //source of the below function : http://www.jquery4u.com/jquery-functions/jquery-convert-rgb-hex-color/
-
 function rgb2hex(rgb) { rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/); 
     return "#" +   ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2) +   ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2) +   ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2);
 }
@@ -120,3 +114,21 @@ request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 // Actually sends the request to the server.
 request.send(data);
 }
+
+function initCarousel(){
+    $('.carousel').carousel();
+}
+
+$(document).ready(function(){
+    //init canvas for drawing
+    $.each(['#f00', '#ff0', '#0f0', '#0ff', '#00f', '#f0f', '#000', '#fff'], function() {
+      $('#colors_demo .tools').append("<a href='#colors_sketch' data-color='" + this + "' style='width: 10px; background: " + this + ";'></a> ");
+    });
+    $.each([10, 15, 20], function() {
+      $('#colors_demo .tools').append("<a href='#colors_sketch' data-size='" + this + "' style='background: #ccc'>" + this + "</a> ");
+    });
+    $('#colors_sketch').sketch();
+    
+    //init gallery
+    initCarousel();
+});
