@@ -53,6 +53,9 @@
                             <div class="row center">
                                 <a id="gallery-btn" onclick="nav('gallery')"class="btn-large waves-effect waves-light orange">Choose in our gallery</a>
                             </div>
+                            <div class="row center">
+                                <a id="game-btn" onclick="nav('game')"class="btn-large waves-effect waves-light orange">Play a game</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -133,6 +136,25 @@
                     </div>     
                 </div>
                 <!-- END OF GALLERY SECTION -->
+                
+                <!-- GAME SECTION -->
+                <div id="game" class="section hide white">
+                    <h2 class="header center orange-text">Don't let the ball go ouside</h2>
+                    <div class="row center">
+                        <div class="demo" id="colors_demo">
+                            <canvas id="game_canvas" width="400" height="400" style="margin-top: 25px; border-radius: 200px; border: 1px solid black;"></canvas>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col l6 s6 center">
+                            <a href="#" id="game-btn" onclick="goHomeFrom('game')" class="btn-large waves-effect waves-light blue-grey lighten-5">Back</a>
+                        </div>
+                        <div class="col l6 s6 center">
+                            <a href="#" id="start-btn" class="btn-large waves-effect waves-light light-blue">start</a>
+                        </div>
+                    </div>     
+                </div>
+                <!-- END OF GAME SECTION -->  
                 
                 <!-- ABOUT SECTION -->
                 <div id="about" class="section white hide">
