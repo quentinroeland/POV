@@ -72,10 +72,9 @@ function getDataToSend(canvas){
         colorsTab.push(row);
     }
     var toReturn = {};
-    toReturn.body = {};
-    toReturn.body.i = 23;
-    toReturn.body.j = 72;
-    toReturn.body.image = colorsTab;
+    toReturn.i = 23;
+    toReturn.j = 72;
+    toReturn.image = colorsTab;
     return toReturn;
 }
 
