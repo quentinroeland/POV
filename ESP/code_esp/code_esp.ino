@@ -112,28 +112,27 @@ server.on("/image",HTTP_POST, treatImage);
   pinMode(HALL, INPUT);
 }
 
-void loop() {
+void loop(){
   unsigned long now = millis();
   server.handleClient();
+  int tableSize = 120;
   if (!magnetNear()) {
     if(started){
     unsigned long current = now - lastTime;
     for (int i = 0; i < nbLeds/3; i++) {
-        turn(draw->bitmap[i][(current * 100 /diff - 1)%100],i);
-  server.handleClient();
+        turn(draw->bitmap[i][(current * tableSize /diff - 1)%tableSize],i);
+        server.handleClient();
     }
     for (int i = nbLeds/3; i < 2*nbLeds/3; i++) {
-        turn(draw->bitmap[22 - (i-nbLeds/3)][((current * 100 /diff - 1) + 33 )%100],i);
-  server.handleClient();
+        turn(draw->bitmap[22 - (i-nbLeds/3)][((current * tableSize /diff - 1) + 33 )%tableSize],i);
+        server.handleClient();
     }
     for (int i = 2*nbLeds/3; i < nbLeds; i++) {
-        turn(draw->bitmap[22 - (i-2*nbLeds/3)][((current * 100 /diff - 1) + 66 )%100],i);
-  server.handleClient();
+        turn(draw->bitmap[22 - (i-2*nbLeds/3)][((current * tableSize /diff - 1) + 66 )%tableSize],i);
+        server.handleClient();
     }
-    }
-    
-    strip.show();
-    //turnOff();
+  }  
+  strip.show();
   } else {
     unsigned long tmpdiff = now - lastTime;
     if(tmpdiff > 50){
@@ -143,8 +142,7 @@ void loop() {
       
     }
  
-  }
-  
+ } 
 }
 
 bool magnetNear() {
