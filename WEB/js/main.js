@@ -14,6 +14,8 @@ function readURL(input) {
             canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
             var toSend = getDataToSend(canvas);
             console.log(toSend);
+            
+            console.log(JSON.stringify(toSend));
             postData(toSend);
             
         };
@@ -51,7 +53,8 @@ function getDataToSend(canvas){
             var r = pixel[0];
             var g = pixel[1];
             var b = pixel[2];
-            var tmp = [r,g,b]
+            var tmp = rgbToHex(r, g, b); 
+            //var tmp = [r,g,b]
             row.push(tmp);
         }
         pixelsData.push(row);
@@ -60,8 +63,8 @@ function getDataToSend(canvas){
     var colorsTab = [];
     for(var r = 0 ; r < 23 ;r++){
         var row = [];
-        for(var d = 0 ; d < 120 ; d++){
-            var teta = d *3;
+        for(var d = 0 ; d < 72 ; d++){  
+            var teta = d *5;
             x = Number(r*Math.cos(teta) + 23).toFixed(0);
             y = Number(r*Math.sin(teta) + 23).toFixed(0);
             row.push(pixelsData[x][y]) 
@@ -71,14 +74,14 @@ function getDataToSend(canvas){
     var toReturn = {};
     toReturn.body = {};
     toReturn.body.i = 23;
-    toReturn.body.j = 120;
+    toReturn.body.j = 72;
     toReturn.body.image = colorsTab;
     return toReturn;
 }
 
 
 function postData(data){    
-var url = "192.168.1.34/image/";
+var url = "http://192.168.2.101/image/";
 var method = "POST";
 // You REALLY want async = true.
 // Otherwise, it'll block ALL execution waiting for server response.
@@ -132,3 +135,13 @@ $(document).ready(function(){
     //init gallery
     initCarousel();
 });
+
+
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
