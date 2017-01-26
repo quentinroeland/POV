@@ -1,48 +1,53 @@
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
+//////////////////////
+/**  UPLOAD IMG    **/
+//////////////////////
 
+var IMG_HEIGH = 47;
+var IMG_WIDTH = 47;
+
+function readImgPath(input) {
+    if(input.files && input.files[0]) {
+        var reader = new FileReader();
         reader.onload = function (e) {
             $('#preview')
                 .attr('src', e.target.result)
-                .width(90)
-                .height(90);
-            var img = document.getElementById('preview');
-            var canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
-            canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
-            var toSend = getDataToSend(canvas);
-            console.log(toSend);
-            
-            console.log(JSON.stringify(toSend));
-            postData(toSend);
-            
+                .width(IMG_HEIGH)
+                .height(IMG_WIDTH);
+            //do not change the height and width
         };
-
         reader.readAsDataURL(input.files[0]);
     }
 }
 
-
-function nav(section){
-    $("#home").addClass('hide');
-    $("#"+section).removeClass('hide');
-    $("#"+section).addClass('active');
-    initCarousel();
+function sendFromImg(img_id){
+    var img = document.getElementById(img_id);
+    var canvas = getCanvasToSend(img);
+    $("#here").append(canvas);
+    postData(getDataToSend(canvas));
 }
 
-function goHomeFrom(section){
-    $("#"+section).removeClass('active');
-    $("#"+section).addClass('hide');
-    $("#home").removeClass('hide');
+function sendFromCanvas(canvas_id){
+    var canvas = document.getElementById(canvas_id);
+    var img = document.createElement("img"); // create img tag
+    img.src = canvas.toDataURL();
+    img.width = IMG_WIDTH;
+    img.height = IMG_HEIGH;
+    var canvas_tosend = getCanvasToSend(img);
+    $("#colors_demo").append(img);
+    postData(getDataToSend(canvas_tosend));
 }
 
-//source of the below function : http://www.jquery4u.com/jquery-functions/jquery-convert-rgb-hex-color/
-function rgb2hex(rgb) { rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/); 
-    return "#" +   ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2) +   ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2) +   ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2);
+function getCanvasToSend(img){
+    var canvas = document.createElement('canvas');
+    canvas.width = window.IMG_WIDTH;
+    canvas.height = window.IMG_HEIGH;
+    canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
+    return canvas;
 }
 
+//////////////////////
+/**   IMG GEN      **/
+//////////////////////
 
 function getDataToSend(canvas){
     var pixelsData = [];
@@ -66,8 +71,8 @@ function getDataToSend(canvas){
     var colorsTab = [];
     for (var led = 0; led < 23; led++){
         var led_circle = [];
-        for( var pos = 0; pos < 120; pos++){
-            var teta =  2*Math.PI + 2*Math.PI*pos*3/360;
+        for( var pos = 0; pos < 72; pos++){
+            var teta =  2*Math.PI + 2*Math.PI*pos*5/360;
             x = Number(led*Math.cos(teta) + 23).toFixed(0);
             y = Number(led*Math.sin(teta) + 23).toFixed(0);
             led_circle.push(pixelsData[y][x])
@@ -81,49 +86,106 @@ function getDataToSend(canvas){
     return toReturn;
 }
 
+//////////////////////
+/**   GEN TOOLS    **/
+//////////////////////
+
+//source of the below function : http://www.jquery4u.com/jquery-functions/jquery-convert-rgb-hex-color/
+function rgb2hex(rgb) { 
+    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/); 
+    return "#" 
+        + ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2)
+        + ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2)
+        + ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2);
+}
+
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+//////////////////////
+/**   IMG POST     **/
+//////////////////////
 
 function postData(data){    
-//for simu.html
-localStorage.setItem('image', JSON.stringify(data.body))
-var url = "http://192.168.2.101/image/";
-var method = "POST";
-// You REALLY want async = true.
-// Otherwise, it'll block ALL execution waiting for server response.
-var async = true;
+    //for simu.html
+    localStorage.setItem('image', JSON.stringify(data.body))
+    var url = "http://192.168.2.101/image/";
+    var method = "POST";
+    // You REALLY want async = true.
+    // Otherwise, it'll block ALL execution waiting for server response.
+    var async = true;
 
-var request = new XMLHttpRequest();
+    var request = new XMLHttpRequest();
 
-// Before we send anything, we first have to say what we will do when the
-// server responds. This seems backwards (say how we'll respond before we send
-// the request? huh?), but that's how Javascript works.
-// This function attached to the XMLHttpRequest "onload" property specifies how
-// the HTTP response will be handled. 
-request.onload = function () {
+    // Before we send anything, we first have to say what we will do when the
+    // server responds. This seems backwards (say how we'll respond before we send
+    // the request? huh?), but that's how Javascript works.
+    // This function attached to the XMLHttpRequest "onload" property specifies how
+    // the HTTP response will be handled. 
+    request.onload = function () {
 
-   // Because of javascript's fabulous closure concept, the XMLHttpRequest "request"
-   // object declared above is available in this function even though this function
-   // executes long after the request is sent and long after this function is
-   // instantiated. This fact is CRUCIAL to the workings of XHR in ordinary
-   // applications.
+       // Because of javascript's fabulous closure concept, the XMLHttpRequest "request"
+       // object declared above is available in this function even though this function
+       // executes long after the request is sent and long after this function is
+       // instantiated. This fact is CRUCIAL to the workings of XHR in ordinary
+       // applications.
 
-   // You can get all kinds of information about the HTTP response.
-   var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
-   var data = request.responseText; // Returned data, e.g., an HTML document.
-   console.log(request);
+       // You can get all kinds of information about the HTTP response.
+       var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+       var data = request.responseText; // Returned data, e.g., an HTML document.
+       console.log(request);
+    }
+
+    request.open(method, url, async);
+
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    // Or... request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+    // Or... whatever
+
+    // Actually sends the request to the server.
+    request.send(data);
 }
 
-request.open(method, url, async);
+//////////////////////
+/**   PAGE TOOLS   **/
+//////////////////////
 
-request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-// Or... request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-// Or... whatever
-
-// Actually sends the request to the server.
-request.send(data);
+function nav(section){
+    $("#home").addClass('hide');
+    $("#"+section).removeClass('hide');
+    $("#"+section).addClass('active');
 }
 
-function initCarousel(){
-    $('.carousel').carousel();
+function goHomeFrom(section){
+    $("#"+section).removeClass('active');
+    $("#"+section).addClass('hide');
+    $("#home").removeClass('hide');
+}
+
+function initImagePicker(){
+    var dir = "pictures/";
+    var ext = ".png";
+    
+    $.ajax({
+        //This will retrieve the contents of the folder if the folder is configured as 'browsable'
+        url: dir,
+        success: function (data) {
+            //List all .png file names in the page
+            $(data).find("a:contains(" + ext + ")").each(function () {
+                var filename = this.href.replace(window.location.host, "").replace("http://", "");
+                var opt = document.createElement("option");
+                opt.value = filename;
+            });
+        }
+    });
+    
+    $("select").imagepicker();
 }
 
 $(document).ready(function(){
@@ -137,15 +199,5 @@ $(document).ready(function(){
     $('#colors_sketch').sketch();
     
     //init gallery
-    initCarousel();
+    initImagePicker();
 });
-
-
-function componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-}
-
-function rgbToHex(r, g, b) {
-    return componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
