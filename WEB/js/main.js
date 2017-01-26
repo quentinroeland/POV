@@ -60,6 +60,9 @@ function getDataToSend(canvas){
         pixelsData.push(row);
     }
     
+    //for pixels.html
+    localStorage.setItem('color_array', JSON.stringify(pixelsData));
+    
     var colorsTab = [];
     for(var r = 0 ; r < 23 ;r++){
         var row = [];

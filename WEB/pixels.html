@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+
+    <title>POV Data Viewer</title>
+    <meta name="description" content="Simulator to see POV Generator Data">
+    <meta name="author" content="ISEN Lille">
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/javascript">  
+        var data = JSON.parse(localStorage.getItem('color_array'));
+        var table = document.createElement('table');
+        var tableBody = document.createElement('tbody');
+
+        data.forEach(function(rowData) {
+            var row = document.createElement('tr');
+
+            rowData.forEach(function(ledcolor) {
+                var cell = document.createElement('td');
+                cell.appendChild(document.createTextNode("[_]"));
+                cell.style.backgroundColor = "rgb(" + ledcolor[0] + "," + ledcolor[1] + "," + ledcolor[2] + ")";
+                cell.style.color = "rgb(" + ledcolor[0] + "," + ledcolor[1] + "," + ledcolor[2] + ")";
+                row.appendChild(cell);
+            });
+
+            tableBody.appendChild(row);
+        });
+
+        table.appendChild(tableBody);
+        document.body.appendChild(table);
+    </script>
+</body>
+</html>
