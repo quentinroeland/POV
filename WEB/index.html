@@ -66,7 +66,7 @@
                             <div class="file-field input-field">
                                 <div class="btn-large waves-effect waves-light orange">
                                     <span>Pick a file</span>
-                                    <input type="file" onchange="readURL(this);">
+                                    <input type="file" onchange="readImgPath(this);">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text">
@@ -84,7 +84,7 @@
                             <a id="upload-btn" onclick="goHomeFrom('upload')" class="btn-large waves-effect waves-light blue-grey lighten-5">Back</a>
                         </div>
                         <div class="col l6 s6 center">
-                            <a id="upload-submit-btn" onclick="" class="btn-large waves-effect waves-light light-blue">Send</a>
+                            <a id="upload-submit-btn" onclick="sendFromImg('preview')" class="btn-large waves-effect waves-light light-blue">Send</a>
                         </div>
                     </div>                                      
                 </div>
@@ -105,7 +105,7 @@
                             <a href="#" id="draw-btn" onclick="goHomeFrom('draw')" class="btn-large waves-effect waves-light blue-grey lighten-5">Back</a>
                         </div>
                         <div class="col l6 s6 center">
-                            <a href="#" id="draw-submit-btn" class="btn-large waves-effect waves-light light-blue">Send</a>
+                            <a id="draw-submit-btn" onclick="sendFromCanvas('colors_sketch')" class="btn-large waves-effect waves-light light-blue">Send</a>
                         </div>
                     </div>     
                 </div>
