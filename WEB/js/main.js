@@ -22,7 +22,6 @@ function readImgPath(input) {
 function sendFromImg(img_id){
     var img = document.getElementById(img_id);
     var canvas = getCanvasToSend(img);
-    $("#here").append(canvas);
     postData(getDataToSend(canvas));
 }
 
@@ -33,7 +32,6 @@ function sendFromCanvas(canvas_id){
     img.width = IMG_WIDTH;
     img.height = IMG_HEIGH;
     var canvas_tosend = getCanvasToSend(img);
-    $("#colors_demo").append(img);
     postData(getDataToSend(canvas_tosend));
 }
 
@@ -168,6 +166,11 @@ function goHomeFrom(section){
     $("#home").removeClass('hide');
 }
 
+function clearCanvas(){
+    var canvas = document.getElementById('colors_sketch');
+    canvas.getContext('2d').clearRect(0,0, canvas.height, canvas.width);
+}
+
 function initImagePicker(){
     var dir = "pictures/";
     var ext = ".png";
@@ -193,9 +196,10 @@ $(document).ready(function(){
     $.each(['#f00', '#ff0', '#0f0', '#0ff', '#00f', '#f0f', '#000', '#fff'], function() {
       $('#colors_demo .tools').append("<a href='#colors_sketch' data-color='" + this + "' style='width: 10px; background: " + this + ";'></a> ");
     });
-    $.each([10, 15, 20], function() {
+    $.each([15, 20, 25], function() {
       $('#colors_demo .tools').append("<a href='#colors_sketch' data-size='" + this + "' style='background: #ccc'>" + this + "</a> ");
     });
+    $('#colors_demo .tools').append("<a onclick='clearCanvas()' data-size='" + this + "' style='background: #ccc'>Clean</a> ");
     $('#colors_sketch').sketch();
     
     //init gallery
