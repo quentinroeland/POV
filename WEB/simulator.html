@@ -34,7 +34,7 @@
         var nb_leds = data.i;
         var nb_segments = data.j;
 
-        var div = 360 / 120;
+        var div = 360 / data.j;
         var rootdiv = document.getElementById('root');
         var offsetToParentCenter = parseInt(rootdiv.offsetWidth / 2);  //assumes parent is square
         var offsetToChildCenter = 20;
@@ -53,7 +53,7 @@
                 childdiv.style.height = ledSize + "px";
                 childdiv.style.width = ledSize + "px";
                 childdiv.style.borderRadius = ledSize + "px";
-                childdiv.style.backgroundColor = "rgb(" + ledcolor[0] + "," + ledcolor[1] + "," + ledcolor[2] + ")";
+                childdiv.style.backgroundColor = "#" + ledcolor; //rgb(" + ledcolor[0] + "," + ledcolor[1] + "," + ledcolor[2] + ")";
                 var y = Math.sin((div * segment) * (Math.PI / 180)) * radius;
                 var x = Math.cos((div * segment) * (Math.PI / 180)) * radius;
                 childdiv.style.top = (y + totalOffset).toString() + "px";

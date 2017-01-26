@@ -54,7 +54,7 @@ function getDataToSend(canvas){
     for (var i = 0; i < 47; i++) {
         var row = [];
         for (var j = 0; j < 47; j++) {
-            var pixel = canvas.getContext('2d').getImageData(i, j, 1, 1).data;
+            var pixel = canvas.getContext('2d').getImageData(j, i, 1, 1).data;
             var r = pixel[0];
             var g = pixel[1];
             var b = pixel[2];
@@ -72,7 +72,7 @@ function getDataToSend(canvas){
     for (var led = 0; led < 23; led++){
         var led_circle = [];
         for( var pos = 0; pos < 72; pos++){
-            var teta =  2*Math.PI + 2*Math.PI*pos*5/360;
+            var teta =  2*Math.PI*pos*5/360;
             x = Number(led*Math.cos(teta) + 23).toFixed(0);
             y = Number(led*Math.sin(teta) + 23).toFixed(0);
             led_circle.push(pixelsData[y][x])
@@ -114,7 +114,7 @@ function rgbToHex(r, g, b) {
 
 function postData(data){    
     //for simu.html
-    localStorage.setItem('image', JSON.stringify(data.body))
+    localStorage.setItem('image', JSON.stringify(data))
     var url = "http://192.168.2.101/image/";
     var method = "POST";
     // You REALLY want async = true.
