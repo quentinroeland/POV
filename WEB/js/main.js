@@ -35,6 +35,16 @@ function sendFromCanvas(canvas_id){
     postData(getDataToSend(canvas_tosend));
 }
 
+function sendFromGallery(){
+    var filename = document.getElementById("select_gallery").value;
+    var img = document.createElement("img"); // create img tag
+    img.src = filename;
+    img.width = IMG_WIDTH;
+    img.height = IMG_HEIGH;
+    var canvas = getCanvasToSend(img);
+    postData(getDataToSend(canvas));
+}
+
 function getCanvasToSend(img){
     var canvas = document.createElement('canvas');
     canvas.width = window.IMG_WIDTH;
@@ -182,13 +192,16 @@ function initImagePicker(){
             //List all .png file names in the page
             $(data).find("a:contains(" + ext + ")").each(function () {
                 var filename = this.href.replace(window.location.host, "").replace("http://", "");
-                var opt = document.createElement("option");
-                opt.value = filename;
+                
+                var opt = "<option data-img-src='" + filename + "' height=80px width=80px value='" + filename + "'></option>"                
+                $("#select_gallery").append(opt);
+                // */
             });
+        },
+        complete: function (data) {
+            $("#select_gallery").imagepicker();
         }
-    });
-    
-    $("select").imagepicker();
+    });    
 }
 
 $(document).ready(function(){
