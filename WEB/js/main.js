@@ -64,15 +64,15 @@ function getDataToSend(canvas){
     localStorage.setItem('color_array', JSON.stringify(pixelsData));
     
     var colorsTab = [];
-    for(var r = 0 ; r < 23 ;r++){
-        var row = [];
-        for(var d = 0 ; d < 72 ; d++){  
-            var teta = d *5;
-            x = Number(r*Math.cos(teta) + 23).toFixed(0);
-            y = Number(r*Math.sin(teta) + 23).toFixed(0);
-            row.push(pixelsData[x][y]) 
+    for (var led = 0; led < 23; led++){
+        var led_circle = [];
+        for( var pos = 0; pos < 120; pos++){
+            var teta =  2*Math.PI + 2*Math.PI*pos*3/360;
+            x = Number(led*Math.cos(teta) + 23).toFixed(0);
+            y = Number(led*Math.sin(teta) + 23).toFixed(0);
+            led_circle.push(pixelsData[y][x])
         }
-        colorsTab.push(row);
+        colorsTab.push(led_circle);
     }
     var toReturn = {};
     toReturn.i = 23;
