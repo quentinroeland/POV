@@ -83,6 +83,8 @@ function getDataToSend(canvas){
 
 
 function postData(data){    
+//for simu.html
+localStorage.setItem('image', JSON.stringify(data.body))
 var url = "http://192.168.2.101/image/";
 var method = "POST";
 // You REALLY want async = true.

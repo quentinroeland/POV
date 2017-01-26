@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+
+    <title>POV Simulator</title>
+    <meta name="description" content="Simulator to see POV Generator Data">
+    <meta name="author" content="ISEN Lille">
+</head>
+
+<body>
+    <style type="text/css">
+        #root
+        {
+            position: relative;
+            width: 10px;
+            height: 10px;
+            background-color: #000000;
+            border-radius: 10px;
+            margin: 500px;
+        }
+
+        .led
+        {
+            position: absolute;
+            background-color: #ca3;
+        }
+    </style>
+
+    <div id="root"></div>
+    <script type="text/javascript">  
+        var data = JSON.parse(localStorage.getItem('image'));
+        console.log(data);
+        var nb_leds = data.i;
+        var nb_segments = data.j;
+
+        var div = 360 / 120;
+        var rootdiv = document.getElementById('root');
+        var offsetToParentCenter = parseInt(rootdiv.offsetWidth / 2);  //assumes parent is square
+        var offsetToChildCenter = 20;
+        var totalOffset = offsetToParentCenter - offsetToChildCenter;
+
+
+        for (var led=0; led < nb_leds; led++){
+            var radius = led*20;
+
+            for (var segment=0; segment < nb_segments; segment++){
+                var ledcolor = (data.image[led][segment]);
+                var ledSize = 10;
+                var childdiv = document.createElement('div');
+                childdiv.className = 'led';
+                childdiv.style.position = 'absolute';
+                childdiv.style.height = ledSize + "px";
+                childdiv.style.width = ledSize + "px";
+                childdiv.style.borderRadius = ledSize + "px";
+                childdiv.style.backgroundColor = "rgb(" + ledcolor[0] + "," + ledcolor[1] + "," + ledcolor[2] + ")";
+                var y = Math.sin((div * segment) * (Math.PI / 180)) * radius;
+                var x = Math.cos((div * segment) * (Math.PI / 180)) * radius;
+                childdiv.style.top = (y + totalOffset).toString() + "px";
+                childdiv.style.left = (x + totalOffset).toString() + "px";
+                rootdiv.appendChild(childdiv);
+            }
+        }
+    </script>
+
+</body>
+</html>
