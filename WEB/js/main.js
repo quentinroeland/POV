@@ -45,6 +45,34 @@ function sendFromGallery(){
     postData(getDataToSend(canvas));
 }
 
+function sendFromText(canvasName){
+    var canvas = document.getElementById(canvasName);
+    
+    var pixelsData = [];
+    for (var i = 0; i < 23; i++) {
+        var row = [];
+        for (var j = 0; j < 72; j++) {
+            var pixel = canvas.getContext('2d').getImageData(j, 22-i, 1, 1).data;
+            var r = pixel[0];
+            var g = pixel[1];
+            var b = pixel[2];
+            var tmp = rgbToHex(r, g, b); 
+            row.push(tmp);
+        }
+        pixelsData.push(row);
+    }
+    
+    //for pixels.html
+    localStorage.setItem('color_array', JSON.stringify(pixelsData));
+    
+    var toSend = {};
+    toSend.i = 23;
+    toSend.j = 72;
+    toSend.image = pixelsData;
+    
+    postData(toSend);
+}
+
 function getCanvasToSend(img){
     var canvas = document.createElement('canvas');
     canvas.width = window.IMG_WIDTH;
@@ -204,6 +232,19 @@ function initImagePicker(){
     });    
 }
 
+function initTextInput(){
+    var canvas = document.getElementById('textCanvas');
+    var context = canvas.getContext('2d');
+    var imgElement = document.getElementById('textImg');
+    document.getElementById('textinput').addEventListener('keyup', function (){
+        var value = this.value.toLocaleString().toUpperCase();
+        context.font="20px Verdana";
+        context.fillStyle = "#FF0000";;
+        context.fillText(value, 0, 17);                
+        imgElement.src = context.canvas.toDataURL();
+    }, false);
+}
+
 $(document).ready(function(){
     //init canvas for drawing
     $.each(['#f00', '#ff0', '#0f0', '#0ff', '#00f', '#f0f', '#000', '#fff'], function() {
@@ -217,4 +258,6 @@ $(document).ready(function(){
     
     //init gallery
     initImagePicker();
+    
+    initTextInput();
 });

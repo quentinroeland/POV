@@ -55,6 +55,9 @@
                             <div class="row center">
                                 <a id="gallery-btn" onclick="nav('gallery')"class="btn-large waves-effect waves-light orange">Choose in our gallery</a>
                             </div>
+                            <div class="row center">
+                                <a id="gallery-btn" onclick="nav('write')"class="btn-large waves-effect waves-light orange">Write something</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -131,6 +134,29 @@
                     </div>     
                 </div>
                 <!-- END OF GALLERY SECTION -->
+                
+                <!-- TEXT SECTION-->
+                <div id="write" class="section hide white">
+                    <h2 class="header center orange-text">Write something</h2>
+                    <div class="row center">
+                        <div class="col l12 s12">
+                            <input id="textinput" type="text">
+                            <br>
+                            <canvas id='textCanvas' height=23 width="72"></canvas>
+                            <img id='textImg'>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col l6 s6 center">
+                            <a id="draw-back-btn" onclick="goHomeFrom('write')" class="btn-large waves-effect waves-light blue-grey lighten-5">Back</a>
+                        </div>
+                        <div class="col l6 s6 center">
+                            <a id="draw-submit-btn" onclick="sendFromText('textCanvas')" class="btn-large waves-effect waves-light light-blue">Send</a>
+                        </div>
+                    </div>     
+                </div>
+                
+                <!-- END OF TEXT SECTION-->
                 
                 <!-- ABOUT SECTION -->
                 <div id="about" class="section white hide">
