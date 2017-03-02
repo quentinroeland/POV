@@ -9,13 +9,12 @@
 </head>
 
 <body>
-    <div id="root"></div>
     <script type="text/javascript">  
-        var data = JSON.parse(localStorage.getItem('color_array'));
-        var table = document.createElement('table');
-        var tableBody = document.createElement('tbody');
+        function printData(data){
+            var table = document.createElement('table');
+            var tableBody = document.createElement('tbody');
 
-        data.forEach(function(rowData) {
+            data.forEach(function(rowData) {
             var row = document.createElement('tr');
 
             rowData.forEach(function(ledcolor) {
@@ -31,6 +30,14 @@
 
         table.appendChild(tableBody);
         document.body.appendChild(table);
+        }
+        
+        var data = JSON.parse(localStorage.getItem('color_array'));
+        printData(data);
+        
+        var data = JSON.parse(localStorage.getItem('image'));
+        printData(data.image);
+    
     </script>
 </body>
 </html>
