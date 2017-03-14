@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 
     <title>POV Simulator</title>
-    <meta name="description" content="Simulator to see POV Generator Data">
+    <meta name="description" content="Simulator to see POV Display">
     <meta name="author" content="ISEN Lille">
 </head>
 
@@ -27,37 +27,39 @@
         }
     </style>
 
+    <!-- root node used to append the points -->
     <div id="root"></div>
+    
     <script type="text/javascript">  
-        var data = JSON.parse(localStorage.getItem('image'));
-        console.log(data);
-        var nb_leds = data.i;
-        var nb_segments = data.j;
+        var data = JSON.parse(localStorage.getItem('image')); //load data from local storage
+        var nb_leds = data.i; //load the number of led per branch
+        var nb_segments = data.j; //load the number of segments for a complete rotation
+        
+        var gap = 360 / nb_segments;  //set the gap between each segments
 
-        var div = 360 / data.j;
-        var rootdiv = document.getElementById('root');
+        var rootdiv = document.getElementById('root'); //get root node of dom
         var offsetToParentCenter = parseInt(rootdiv.offsetWidth / 2);  //assumes parent is square
-        var offsetToChildCenter = 20;
-        var totalOffset = offsetToParentCenter - offsetToChildCenter;
+        var offsetToChildCenter = 20; //set the offset relative to the previous circle
+        var totalOffset = offsetToParentCenter - offsetToChildCenter; //set the offset absolute
 
 
         for (var led=0; led < nb_leds; led++){
-            var radius = led*20;
+            var radius = led*offsetToChildCenter; //set the radius of the current circle
 
             for (var segment=0; segment < nb_segments; segment++){
-                var ledcolor = (data.image[led][segment]);
-                var ledSize = 10;
+                var ledcolor = (data.image[led][segment]); //set the color of the led from the data
+                var ledSize = 10; //set the size of the element represented a led
                 var childdiv = document.createElement('div');
                 childdiv.className = 'led';
                 childdiv.style.position = 'absolute';
-                childdiv.style.height = ledSize + "px";
-                childdiv.style.width = ledSize + "px";
-                childdiv.style.borderRadius = ledSize + "px";
+                childdiv.style.height = ledSize + "px"; //set height
+                childdiv.style.width = ledSize + "px"; //set width
+                childdiv.style.borderRadius = ledSize + "px"; //set borderRadius to get a circular div
                 childdiv.style.backgroundColor = "#" + ledcolor; //rgb(" + ledcolor[0] + "," + ledcolor[1] + "," + ledcolor[2] + ")";
-                var y = Math.sin((div * segment) * (Math.PI / 180)) * radius;
-                var x = Math.cos((div * segment) * (Math.PI / 180)) * radius;
-                childdiv.style.top = (y + totalOffset).toString() + "px";
-                childdiv.style.left = (x + totalOffset).toString() + "px";
+                var y = Math.sin((gap * segment) * (Math.PI / 180)) * radius; //get the y relative position
+                var x = Math.cos((gap * segment) * (Math.PI / 180)) * radius; //get the x relative position
+                childdiv.style.top = (y + totalOffset).toString() + "px"; //set the y position (absolute)
+                childdiv.style.left = (x + totalOffset).toString() + "px"; //set the x position (absolute)
                 rootdiv.appendChild(childdiv);
             }
         }

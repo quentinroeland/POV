@@ -9,32 +9,39 @@
 </head>
 
 <body>
-    <script type="text/javascript">  
+    <script type="text/javascript"> 
+        // print data colors in a html table
         function printData(data){
             var table = document.createElement('table');
             var tableBody = document.createElement('tbody');
 
+            //for each row of data
             data.forEach(function(rowData) {
-            var row = document.createElement('tr');
+                var row = document.createElement('tr');
 
-            rowData.forEach(function(ledcolor) {
-                var cell = document.createElement('td');
-                cell.appendChild(document.createTextNode("[_]"));
-                cell.style.backgroundColor = "#" + ledcolor; //rgb(" + ledcolor[0] + "," + ledcolor[1] + "," + ledcolor[2] + ")";
-                cell.style.color = "#" + ledcolor; //"rgb(" + ledcolor[0] + "," + ledcolor[1] + "," + ledcolor[2] + ")";
-                row.appendChild(cell);
+                //for each cell/column of the row of data
+                rowData.forEach(function(ledcolor) {
+                    var cell = document.createElement('td');
+                    cell.appendChild(document.createTextNode("[_]"));
+                    cell.style.backgroundColor = "#" + ledcolor; //rgb(" + ledcolor[0] + "," + ledcolor[1] + "," + ledcolor[2] + ")";
+                    cell.style.color = "#" + ledcolor; //"rgb(" + ledcolor[0] + "," + ledcolor[1] + "," + ledcolor[2] + ")";
+                    row.appendChild(cell);
+                });
+
+                //add the row to the table generated
+                tableBody.appendChild(row);
             });
 
-            tableBody.appendChild(row);
-        });
-
-        table.appendChild(tableBody);
-        document.body.appendChild(table);
+            //add table to the document
+            table.appendChild(tableBody);
+            document.body.appendChild(table);
         }
         
+        //print pixels of image
         var data = JSON.parse(localStorage.getItem('color_array'));
         printData(data);
         
+        //print data which will be send to the esp
         var data = JSON.parse(localStorage.getItem('image'));
         printData(data.image);
     
